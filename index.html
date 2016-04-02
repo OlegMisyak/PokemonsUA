@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <title>item GO</title>
+    <script type="text/javascript" >
+
+      profileContentStart = '\<div class="picture-profile"><img src="';
+    profileName = '"></div>\<div class="item-name-profile">';
+    profileAbilities = '\</div>\<div class="abilities-profile">';
+    profileAbilitiesEnd = '</div>';
+    profileCharsFirst = '<div class="characteristics"><div class="col-1-1"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+    profileCharsSecond = '<div class="col-1-2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div>';
+
+
+    Etypes = function(d){
+    resultTypes = "";
+    for (var z = 0; z < d.types.length; z++) {
+    resultTypes += d.types[z].type.name + " ";
+    };
+    return resultTypes;
+    };
+    for(var i = 1; i < 13; i++) {
+      $.get("http://pokeapi.co/api/v2/item/" +i, function (data){
+        $("#item-" + (data.id)).html(data.name);
+        $("#item-" + (data.id)).siblings(".hidden-info").html(profileContentStart + data.sprites.front_default + profileName + data.name + profileAbilities
+        + Etypes(data) + profileAbilitiesEnd + profileCharsFirst + profileCharsSecond);
+        $("#item-" + (data.id)).append('<input type="hidden" value="'+ data.id +'">');  
+        
+        for(var y = 0; y < data.types.length; y++) {
+          data.types[y].type.name
+          prefContent = $("#ability-" + (data.id)).html()
+          typeContent = prefContent + "<div class=\""+ data.types[y].type.name +" type\">"+ data.types[y].type.name +"</div>"
+          $("#ability-" + (data.id)).html(typeContent);
+        };
+    });
+    };
+    $(function(){
+    var previous = "none";
+    $(".pokemon").click(function(e){
+      current = $(e.target).parents(".pokemon").children(".item-name").children("input").val();
+      $("#character").html($(e.target).parents(".pokemon").children(".hidden-info").html());
+        if(previous == current){
+            $("#character").css('display','none');
+            previous = "none";
+        }else{
+            $("#character").css('display','block');
+            previous = current;
+        }
+    });
+    });
+
+
+
+    </script>
+   <style type="text/css">
+
+    .pokemon{
+          border: 1px solid #ddd;
+          width: 200px;
+          height: 300px;
+          margin: 0 20px 20px 0;
+          transition: box-shadow 0.3s;
+        }
+    .pokemon:hover{
+          box-shadow: 0 0 6px #888;
+          transition: box-shadow 0.3s;
+        }
+    .title{
+          position: relative;
+          border: 2px solid black;
+          width: 500px;
+          height: 80px;
+          left: 40%;
+        }
+    .holder{
+          display: inline;
+          float: left;
+        }
+    .row{
+          content: "";
+          display: table;
+          clear: both;
+        }
+    .grid{
+          float: none;
+          margin: 100px 0 0 50px;
+        }
+    .col-0-1{
+          float: left;
+          width: 60%;
+        }
+    .col-0-2{
+        float: left;
+        width: 40%;
+    }
+    .col-1-1{
+        float: left;
+        width: 55%;
+        border: 1px solid black;
+        height: 100px;
+    }
+    .col-1-2{
+        float: left;
+        width: 35%;
+        border: 1px solid black;
+        height: 100px;
+    }
+    .characteristics{
+        content: "";
+          display: table;
+          clear: both;
+          justify-content: center;
+          display: inline;
+    }
+    .picture{
+          float: left;
+          border: 0px;
+          margin: 20px 20px 40px 40px;
+        }
+    .abilities{
+          content: "";
+          clear: both;
+          display: table;
+          margin: 20px 8px 0 2px;
+        }
+    .hidden-info{
+      display: none;
+    }
+    .item-name{
+          text-align: center;
+          font-weight: bold;
+          font-size: 1.375em;
+          font-family: Georgia, serif;
+          text-transform: capitalize;
+          color: #1D0772;
+        }
+    .profile-image{
+          max-width: 50%;
+          margin: 20px 0 0 80px;
+        }
+    .profile{
+          border: 1px solid #ddd;
+          width: 300px;
+          height: 450px;
+          position: fixed;
+          float: left;
+        }
+    #character{
+          display: none;
+        }
+    .item-name-profile{
+          text-align: center;
+          margin: 20px 0 0 0;
+          font-size: 1.375em;
+          font-weight: bold;
+          font-family: Georgia, serif;
+        }
+    .abilities-profile{
+        }
+    article{
+          text-align: center;
+          font-size: 50px;
+          margin: 7px;
+        }
+    .button{
+          float: left;
+          position: absolute;
+          margin: 0 0 55px 0;
+        }
+    .load-more{
+          background-color: #008CBA;
+          border-radius: 4px;
+          border: none;
+          color: white;
+          padding: 12px 285px;
+          text-align: center;
+           text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          font-weight: bold;
+        }
+    
+    .type{
+          display: inline;
+          border-radius: 4px;
+          text-align: center;
+          padding: 4px 20px;
+          border: 1px solid #ddd;
+          margin: 8px;
+          text-transform: capitalize;
+        }
+    .electric{
+          background-color: #F8D030;
+        }
+    .poison{
+          background-color: #A040A0;
+        }
+    .grass{
+          background-color: #78C850;
+        }
+    .fire{
+          background-color: #F08030;
+        }
+    .bug{
+          background-color: #A8B820;
+        }
+    .water{
+          background-color: #6890F0;
+        }
+    .flying{
+          background-color: #A890F0;
+        }
+
+
+   </style>
+
+  </head>
+  <body>
+  <div class="title">
+    <article>Pokedex</article>
+  </div>
+  <div class="grid">
+    <div class="col-0-1">
+      <div>
+        <div class="row">
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/1.png">
+              </div>
+              <div class="item-name" id="item-1"></div>
+              <div class="abilities" id="ability-1"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/2.png">
+              </div>
+              <div class="item-name" id="item-2"></div>
+              <div class="abilities" id="ability-2"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/3.png">
+              </div>
+              <div class="item-name" id="item-3"></div>
+              <div class="abilities" id="ability-3"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/4.png">
+              </div>
+              <div class="item-name" id="item-4"></div>
+              <div class="abilities" id="ability-4"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/5.png">
+              </div>
+              <div class="item-name" id="item-5"></div>
+              <div class="abilities" id="ability-5"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/6.png">
+              </div>
+              <div class="item-name" id="item-6"></div>
+              <div class="abilities" id="ability-6"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/7.png">
+              </div>
+              <div class="item-name" id="item-7"></div>
+              <div class="abilities" id="ability-7"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/8.png">
+              </div>
+              <div class="item-name" id="item-8"></div>
+              <div class="abilities" id="ability-8"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/9.png">
+              </div>
+              <div class="item-name" id="item-9"></div>
+              <div class="abilities" id="ability-9"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/10.png">
+              </div>
+              <div class="item-name" id="item-10"></div>
+              <div class="abilities" id="ability-10"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/11.png">
+              </div>
+              <div class="item-name" id="item-11"></div>
+              <div class="abilities" id="ability-11"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+          <div class="holder">
+            <div class="pokemon">
+              <div class="picture">
+                <img src="http://pokeapi.co/media/img/12.png">
+              </div>
+              <div class="item-name" id="item-12"></div>
+              <div class="abilities" id="ability-12"></div>
+              <div class="hidden-info"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="button">
+          <a href="" target="_blank" class="load-more">Load More</a>
+        </div>
+    </div>
+    <div class="col-0-2">
+      <div class="profile" id="character">
+        <div class="picture-profile"></div>
+        <div class="item-name-profile"></div>
+        <div class="abilities-profile"></div>
+        <div class="characteristics">
+          <div class="col-1-1">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div class="col-1-2">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  </body>
+</html>
